@@ -1,7 +1,7 @@
 import unittest
 from unittest import TestCase
 
-from geometry import Point, LineSegment, ContinuousLine, Triangle
+from geometry import Point, LineSegment, ContinuousLine, Triangle, ConvexHull
 
 
 class PointTest(TestCase):
@@ -91,6 +91,16 @@ class TriangleTest(TestCase):
         self.assertEqual(center.x, 0)
         self.assertEqual(center.y, 1)
         self.assertEqual(radius, 1)
+
+
+class ConvexHullTest(TestCase):
+    def test_convex_hull_creation(self):
+        point_1 = Point(1, 1)
+        point_2 = Point(1, 2)
+        point_3 = Point(2, 1)
+        convex_hull = ConvexHull(point_1, point_2, point_3)
+
+        self.assertEqual(convex_hull.points, [point_1, point_2, point_3])
 
 
 if __name__ == '__main__':
