@@ -158,3 +158,13 @@ class Triangle:
                                           perpendicular_line_2)
         radius = center.distance(line_1.point_1)
         return center, radius
+
+
+class ConvexHull:
+    def __init__(self, point_1, point_2, point_3):
+        """
+        Start with a polygon of 3 points.
+        """
+        self.points = [point_1, point_2, point_3]
+        # TODO: Handle case where points are given in a random order
+
