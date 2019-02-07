@@ -7,6 +7,16 @@ class Point:
         self.x = float(x)
         self.y = float(y)
 
+    def __repr__(self):
+        print('({}, {})'.format(self.x, self.y))
+
+    def __eq__(self, other):
+        if isinstance(other, Point):
+            x_eq = self.x == other.x
+            y_eq = self.y == other.y
+            return x_eq and y_eq
+        return False
+
     def distance(self, point):
         """
         Determine the euclidean distance between this point and another
@@ -66,6 +76,16 @@ class LineSegment(Line):
         self.B = self.point_1.x - self.point_2.x
         # C = A*x1 + B*y1
         self.C = self.A * self.point_1.x + self.B * self.point_1.y
+
+    def __eq__(self, other):
+        if isinstance(other, LineSegment):
+            point_1_eq = self.point_1 == other.point_1
+            point_2_eq = self.point_2 == other.point_2
+            return point_1_eq and point_2_eq
+        return False
+
+    def __ne__(self, other):
+        pass
 
     @classmethod
     def intersect(cls, line_1, line_2):
@@ -167,4 +187,18 @@ class ConvexHull:
         """
         self.points = [point_1, point_2, point_3]
         # TODO: Handle case where points are given in a random order
+        self.edges = []
+        self.create_edges()
+
+    def create_edges(self):
+        """
+        Given points, create a polygon
+        """
+        for i in range(len(self.points)):
+            if i == len(self.points)-1:
+                # If the final point, connect to the starting point
+                edge = LineSegment(self.points[i], self.points[0])
+            else:
+                edge = LineSegment(self.points[i], self.points[i+1])
+            self.edges.append(edge)
 

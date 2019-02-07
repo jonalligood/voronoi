@@ -8,6 +8,13 @@ class PointTest(TestCase):
     def setUp(self):
         self.point = Point(1, 1)
 
+    def test_point_equivalence(self):
+        """
+        Make sure two points with the same x, y are considered equivalent
+        """
+        point = Point(1, 1)
+        self.assertEqual(self.point, point)
+
     def test_distance(self):
         another_point = Point(3, 1)
         distance = self.point.distance(another_point)
@@ -16,12 +23,19 @@ class PointTest(TestCase):
 
 class LineSegmentTest(TestCase):
     def setUp(self):
-        self.A = Point(0, 0)
-        self.B = Point(1, 1)
+        self.point_1 = Point(0, 0)
+        self.point_2 = Point(1, 1)
         C = Point(0, 1)
         D = Point(1, 0)
-        self.line_1 = LineSegment(self.A, self.B)
+        self.line_1 = LineSegment(self.point_1, self.point_2)
         self.line_2 = LineSegment(C, D)
+
+    def test_line_equivalence(self):
+        """
+        Make sure two lines with the same points are considered equivalent
+        """
+        line = LineSegment(self.point_1, self.point_2)
+        self.assertEqual(self.line_1, line)
 
     def test_get_min_max_points(self):
         """
@@ -94,13 +108,21 @@ class TriangleTest(TestCase):
 
 
 class ConvexHullTest(TestCase):
-    def test_convex_hull_creation(self):
-        point_1 = Point(1, 1)
-        point_2 = Point(1, 2)
-        point_3 = Point(2, 1)
-        convex_hull = ConvexHull(point_1, point_2, point_3)
+    def setUp(self):
+        self.point_1 = Point(1, 1)
+        self.point_2 = Point(1, 2)
+        self.point_3 = Point(2, 1)
+        self.convex_hull = ConvexHull(self.point_1, self.point_2, self.point_3)
 
-        self.assertEqual(convex_hull.points, [point_1, point_2, point_3])
+    def test_convex_hull_creation(self):
+        points = [self.point_1, self.point_2, self.point_3]
+        self.assertEqual(self.convex_hull.points, points)
+
+        edge_1 = LineSegment(self.point_1, self.point_2)
+        edge_2 = LineSegment(self.point_2, self.point_3)
+        edge_3 = LineSegment(self.point_3, self.point_1)
+        edges = [edge_1, edge_2, edge_3]
+        self.assertEqual(self.convex_hull.edges, edges)
 
 
 if __name__ == '__main__':
