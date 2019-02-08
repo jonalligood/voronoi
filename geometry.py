@@ -1,7 +1,7 @@
 from math import sqrt
 
 
-class Point:
+class Point(object):
     def __init__(self, x, y):
         # Float the points to ensure Python2 arithmetic
         self.x = float(x)
@@ -24,7 +24,7 @@ class Point:
         return sqrt((point.x - self.x)**2 + (point.y - self.y)**2)
 
 
-class Line:
+class Line(object):
     """
     Parent of LineSegment and ContinuousLine.
     """
@@ -89,7 +89,7 @@ class LineSegment(Line):
 
     @classmethod
     def intersect(cls, line_1, line_2):
-        intersect_point = super().intersect(line_1, line_2)
+        intersect_point = super(LineSegment, cls).intersect(line_1, line_2)
 
         # Check to make sure the point is on both lines
         if line_1.has_point(intersect_point) and line_2.has_point(intersect_point):
@@ -149,7 +149,7 @@ class ContinuousLine(Line):
         return (self.C - self.A * x)/self.B
 
 
-class Triangle:
+class Triangle(object):
     def __init__(self, point_1, point_2, point_3):
         self.point_1 = point_1
         self.point_2 = point_2
@@ -180,7 +180,7 @@ class Triangle:
         return center, radius
 
 
-class ConvexHull:
+class ConvexHull(object):
     def __init__(self, point_1, point_2, point_3):
         """
         Start with a polygon of 3 points.
