@@ -110,8 +110,8 @@ class TriangleTest(TestCase):
 class ConvexHullTest(TestCase):
     def setUp(self):
         self.point_1 = Point(1, 1)
-        self.point_2 = Point(1, 2)
-        self.point_3 = Point(2, 1)
+        self.point_2 = Point(3, 1)
+        self.point_3 = Point(1, 3)
         self.convex_hull = ConvexHull(self.point_1, self.point_2, self.point_3)
 
     def test_convex_hull_creation(self):
@@ -123,6 +123,10 @@ class ConvexHullTest(TestCase):
         edge_3 = LineSegment(self.point_3, self.point_1)
         edges = [edge_1, edge_2, edge_3]
         self.assertEqual(self.convex_hull.edges, edges)
+
+    def test_add_point_to_convex_hull(self):
+        new_point = Point(3, 3)
+        self.convex_hull.add_point(new_point)
 
 
 if __name__ == '__main__':

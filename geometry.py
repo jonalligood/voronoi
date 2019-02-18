@@ -202,3 +202,8 @@ class ConvexHull(object):
                 edge = LineSegment(self.points[i], self.points[i+1])
             self.edges.append(edge)
 
+    def add_point(self, point):
+        """
+        Adds a point to the Convex Hull.
+        """
+        self.points.append(point)
