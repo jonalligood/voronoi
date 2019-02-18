@@ -159,6 +159,26 @@ class Triangle(object):
         self.line_2 = LineSegment(self.point_2, self.point_3)
         self.line_3 = LineSegment(self.point_3, self.point_1)
 
+        self.clockwise = self.is_clockwise()
+
+    def is_clockwise(self):
+        """
+        Determines whether the triangle is clockwise or counter clockwise
+        """
+        orientation = ((self.point_2.y - self.point_1.y) *
+                       (self.point_3.x - self.point_2.x) -
+                       (self.point_2.x - self.point_1.x) *
+                       (self.point_3.y - self.point_2.y))
+
+        if orientation == 0:
+            raise ValueError('Not a triangle: points are on the same straight line')
+        if orientation > 0:
+            # CW
+            return True
+        else:
+            # CCW
+            return False
+
     @classmethod
     def get_circumcircle(cls, line_1, line_2):
         """

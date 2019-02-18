@@ -106,6 +106,19 @@ class TriangleTest(TestCase):
         self.assertEqual(center.y, 1)
         self.assertEqual(radius, 1)
 
+    def test_is_clockwise(self):
+        ccw_triangle = Triangle(self.A, self.B, self.C)
+        self.assertEqual(ccw_triangle.clockwise, False)
+        cw_triangle = Triangle(self.C, self.B, self.A)
+        self.assertEqual(cw_triangle.clockwise, True)
+
+    def test_is_clockwise_colinear(self):
+        """
+        Triangle fails correctly if the points are in a straight line
+        """
+        with self.assertRaises(ValueError):
+            Triangle(Point(0, 0), Point(1, 0), Point(2, 0))
+
 
 class ConvexHullTest(TestCase):
     def setUp(self):
