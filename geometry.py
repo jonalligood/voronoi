@@ -8,7 +8,10 @@ class Point(object):
         self.y = float(y)
 
     def __repr__(self):
-        print('({}, {})'.format(self.x, self.y))
+        return '({}, {})'.format(self.x, self.y)
+
+    def __str__(self):
+        return '({}, {})'.format(self.x, self.y)
 
     def __eq__(self, other):
         if isinstance(other, Point):
@@ -171,7 +174,8 @@ class Triangle(object):
                        (self.point_3.y - self.point_2.y))
 
         if orientation == 0:
-            raise ValueError('Not a triangle: points are on the same straight line')
+            # Points are on the same line
+            return None
         if orientation > 0:
             # CW
             return True
