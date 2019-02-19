@@ -4,30 +4,34 @@ from geometry import Point, Triangle
 
 
 def jarvis(points):
+    """
+    Finds the convex hull for a given set of sorted points. Loops through the
+    points, building a Triangle ABC. If the triangle is Counter Clockwise,
+    point C is more left of point B and is a better candidate for being a hull
+    point.
+    """
     n = len(points)
     hull = []
 
-    l = 0
-    p = 0 # Position of the start_point
+    start_point = 0
+    A = 0  # The first point is guaranteed to be on the convex hull
 
     while True:
-        hull.append(points[p])
-        q = (p + 1) % n # Increases by 1 unless it's the final point in which case
-                    # it loops around
+        hull.append(points[A])
+        B = (A + 1) % n # Increases by 1 unless it's the final point in which case
+                        # it loops around
 
-        for i in range(n):
-            if i == p:
-                continue
-            clockwise = Triangle(points[p], points[q], points[i]).clockwise
+        for C in range(n):
+            clockwise = Triangle(points[A], points[B], points[C]).clockwise
 
             if clockwise == False:
-                q = i
+                B = C
 
-        # Now q is the most counter clockwise with respect to p
-        # Set p as q for next iteration
-        p = q
+        # Now B is the most counter clockwise with respect to A
+        # Set A as B for next iteration
+        A = B
 
-        if p == l:
+        if A == start_point:
             # Back at the start
             break
 
