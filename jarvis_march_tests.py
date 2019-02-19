@@ -5,7 +5,7 @@ from geometry import Point
 from jarvis_march import ConvexHull
 
 
-class JarvisMarchTest(TestCase):
+class ConvexHullTest(TestCase):
     def setUp(self):
         self.point_list = [
             Point(0, 0),
@@ -14,16 +14,31 @@ class JarvisMarchTest(TestCase):
             Point(2, 0),
             Point(2, 2)
         ]
-
-    def test_jarvis_march(self):
-        hull = ConvexHull(self.point_list)
-        expected_hull = [
+        self.expected_hull = [
             Point(0, 0),
             Point(0, 2),
             Point(2, 2),
             Point(2, 0)
         ]
-        self.assertEqual(hull.hull_points, expected_hull)
+
+
+    def test_convex_hull(self):
+        hull = ConvexHull(self.point_list)
+        self.assertEqual(hull.hull_points, self.expected_hull)
+
+    def test_convex_hull_unsorted_points(self):
+        """
+        ConvexHull should be able to handle being passed unsorted points.
+        """
+        unsorted_points = [
+            Point(2, 2),
+            Point(0.75, 1.75),
+            Point(2, 0),
+            Point(0, 0),
+            Point(0, 2)
+        ]
+        hull = ConvexHull(unsorted_points)
+        self.assertEqual(hull.hull_points, self.expected_hull)
 
 if __name__ == '__main__':
     unittest.main()
