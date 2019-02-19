@@ -5,10 +5,12 @@ from geometry import Point, Triangle
 
 class ConvexHull(object):
     """
-    A polygon that wraps around a given set of sorted points.
+    A polygon that wraps around a given set of points.
     """
     def __init__(self, points):
-        self.points = points
+        # Sort the points first on x, then on y
+        sorted_points = sorted(points, key=lambda p: (p.x, p.y))
+        self.points = sorted_points
         self.hull_points = []
         self.build()
 
