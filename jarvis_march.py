@@ -3,37 +3,41 @@ from random import randint
 from geometry import Point, Triangle
 
 
-def jarvis(points):
+class ConvexHull(object):
     """
-    Finds the convex hull for a given set of sorted points. Loops through the
-    points, building a Triangle ABC. If the triangle is Counter Clockwise,
-    point C is more left of point B and is a better candidate for being a hull
-    point.
+    A polygon that wraps around a given set of sorted points.
     """
-    n = len(points)
-    hull = []
+    def __init__(self, points):
+        self.points = points
+        self.hull_points = []
+        self.build()
 
-    start_point = 0
-    A = 0  # The first point is guaranteed to be on the convex hull
+    def build(self):
+        """
+        Loops through self.points, building a Triangle ABC. If the triangle is
+        Counter Clockwise, point C is more left of point B and is a better
+        candidate for being a hull point
+        """
+        n = len(self.points)
+        start_point = 0
+        A = 0
 
-    while True:
-        hull.append(points[A])
-        B = (A + 1) % n # Increases by 1 unless it's the final point in which case
-                        # it loops around
+        while True:
+            self.hull_points.append(self.points[A])
+            B = (A + 1) % n  # Loops back around when we get to the last item
+                             # in self.points
 
-        for C in range(n):
-            clockwise = Triangle(points[A], points[B], points[C]).clockwise
+            for C in range(n):
+                clockwise = Triangle(self.points[A], self.points[B], self.points[C]).clockwise
 
-            if clockwise == False:
-                B = C
+                if clockwise == False:
+                    B = C
 
-        # Now B is the most counter clockwise with respect to A
-        # Set A as B for next iteration
-        A = B
+            # Now B is the point most left with respect to A and is a new
+            # hull point.
+            A = B
 
-        if A == start_point:
-            # Back at the start
-            break
-
-    return hull
+            if A == start_point:
+                # We've looped back around and are finished.
+                break
 
