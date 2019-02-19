@@ -10,7 +10,7 @@ class JarvisMarchTest(TestCase):
         self.point_list = [
             Point(0, 0),
             Point(0, 2),
-            Point(1, 1),
+            Point(0.75, 1.75),
             Point(2, 0),
             Point(2, 2)
         ]
@@ -19,9 +19,9 @@ class JarvisMarchTest(TestCase):
         hull = jarvis(self.point_list)
         expected_hull = [
             Point(0, 0),
-            Point(2, 0),
+            Point(0, 2),
             Point(2, 2),
-            Point(0, 2)
+            Point(2, 0)
         ]
         self.assertEqual(hull, expected_hull)
 

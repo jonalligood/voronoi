@@ -16,7 +16,11 @@ def jarvis(points):
                     # it loops around
 
         for i in range(n):
-            if Triangle(points[p], points[i], points[q]).clockwise == False:
+            if i == p:
+                continue
+            clockwise = Triangle(points[p], points[q], points[i]).clockwise
+
+            if clockwise == False:
                 q = i
 
         # Now q is the most counter clockwise with respect to p
@@ -28,13 +32,4 @@ def jarvis(points):
             break
 
     return hull
-
-
-if __name__ == '__main__':
-    point_list = []
-    for i in range(1000):
-        point_list.append(Point(randint(0, 100), randint(0, 100)))
-    # Sort the list
-    sorted_points = sorted(point_list, key=lambda p: (p.x, p.y))
-    jarvis(sorted_points)
 
