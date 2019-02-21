@@ -1,6 +1,6 @@
 from random import randint
 
-from geometry import Point, Triangle
+from geometry import sort_points, Point, Triangle
 
 
 class ConvexHull(object):
@@ -9,7 +9,7 @@ class ConvexHull(object):
     """
     def __init__(self, points):
         # Sort the points first on x, then on y
-        sorted_points = sorted(points, key=lambda p: (p.x, p.y))
+        sorted_points = sort_points(points)
         self.points = sorted_points
         self.hull_points = []
         self.build()
@@ -43,3 +43,13 @@ class ConvexHull(object):
                 # We've looped back around and are finished.
                 break
 
+    def add_point(self, point):
+        """
+        Given a point, add it to the list of points and rebuild the hull
+        """
+        self.points.append(point)
+        # The point might already be in the hull
+        self.points = sort_points(self.points)
+
+        self.hull_points = []
+        self.build()

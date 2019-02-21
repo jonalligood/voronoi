@@ -40,5 +40,6 @@ class ConvexHullTest(TestCase):
         hull = ConvexHull(unsorted_points)
         self.assertEqual(hull.hull_points, self.expected_hull)
 
+
 if __name__ == '__main__':
     unittest.main()

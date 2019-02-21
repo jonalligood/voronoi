@@ -1,6 +1,13 @@
 from math import sqrt
 
 
+def sort_points(points):
+    """
+    Sorts a given list of Point objects
+    """
+    return  sorted(points, key=lambda p: (p.x, p.y))
+
+
 class Point(object):
     def __init__(self, x, y):
         # Float the points to ensure Python2 arithmetic
@@ -163,6 +170,35 @@ class Triangle(object):
         self.line_3 = LineSegment(self.point_3, self.point_1)
 
         self.clockwise = self.is_clockwise()
+
+    def __str__(self):
+        return 'Triangle({}, {}, {})'.format(self.point_1,
+                                             self.point_2,
+                                             self.point_3)
+
+    def __repr__(self):
+        return 'Triangle({}, {}, {})'.format(self.point_1,
+                                             self.point_2,
+                                             self.point_3)
+
+    def __eq__(self, other):
+        """
+        Determines if the two triangles have the same points even if they are
+        in a different order.
+        """
+        if isinstance(other, Triangle):
+            point_1_eq = (self.point_1 == other.point_1 or
+                          self.point_1 == other.point_2 or
+                          self.point_1 == other.point_3)
+            point_2_eq = (self.point_2 == other.point_1 or
+                          self.point_2 == other.point_2 or
+                          self.point_2 == other.point_3)
+            point_3_eq = (self.point_3 == other.point_1 or
+                          self.point_3 == other.point_2 or
+                          self.point_3 == other.point_3)
+            return point_1_eq and point_2_eq and point_3_eq
+        return False
+
 
     def is_clockwise(self):
         """
