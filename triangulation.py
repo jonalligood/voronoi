@@ -19,7 +19,24 @@ def triangulate(points):
     # Form a triangle and convex hull from the first 3 points
     starter_hull = [points.pop(0) for i in range(3)]
     convex_hull = ConvexHull(starter_hull)
-    triangles.append(Triangle(*starter_hull))
+    first_triangle = Triangle(*starter_hull)
+    if first_triangle.is_collinear():
+        # The points are on the same line
+        # Continue adding points to the convex hull until we get a non
+        # collinear point
+        while True:
+            new_point = points.pop(0)
+            new_triangle = Triangle(new_point, *convex_hull.hull_points[-2:])
+            # We add the point to the convex hull regardless
+
+            if not new_triangle.is_collinear():
+                triangles = build_triangles(new_point, convex_hull.hull_points)
+                break
+            convex_hull.add_point(new_point)
+        else:
+            convex_hull.add_point(new_point)
+    else:
+        triangles.append(Triangle(*starter_hull))
 
     # Do
     for point in points:
@@ -38,7 +55,6 @@ def triangulate(points):
 
         # Add the two points next to new_point in convex hull new_point
         new_point_index = convex_hull.hull_points.index(point)
-        # TODO: Does this break with out of bounds? Likely
         points_to_connect.append(convex_hull.hull_points[new_point_index-1])
         points_to_connect.append(convex_hull.hull_points[new_point_index+1])
 
