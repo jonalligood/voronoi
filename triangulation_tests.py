@@ -41,12 +41,14 @@ class TriangulateTest(TestCase):
             Point(0, 0),
             Point(0, 1),
             Point(0, 2),
+            Point(0, 3),
             Point(1, 0)
         ]
         triangles = triangulate(points)
         expected_triangles = [
             Triangle(Point(0, 0), Point(0, 1), Point(1, 0)),
-            Triangle(Point(0, 1), Point(0, 2), Point(1, 0))
+            Triangle(Point(0, 1), Point(0, 2), Point(1, 0)),
+            Triangle(Point(0, 2), Point(0, 3), Point(1, 0))
         ]
         self.assertEqual(triangles, expected_triangles)
 
