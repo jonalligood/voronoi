@@ -2,7 +2,7 @@ import unittest
 from unittest import TestCase
 
 from geometry import Point, Triangle
-from triangulation import triangulate
+from triangulation import Delaunay
 
 class TriangulateTest(TestCase):
     def test_simple_triangulation(self):
@@ -11,11 +11,11 @@ class TriangulateTest(TestCase):
             Point(0, 1),
             Point(1, 0),
         ]
-        triangles = triangulate(points)
+        delaunay = Delaunay(points)
         expected_triangles = [
             Triangle(Point(0, 0), Point(0, 1), Point(1, 0)),
         ]
-        self.assertEqual(triangles[0], expected_triangles[0])
+        self.assertEqual(delaunay.triangles, expected_triangles)
 
 
     def test_triangulation(self):
@@ -25,12 +25,12 @@ class TriangulateTest(TestCase):
             Point(1, 0),
             Point(1, 1)
         ]
-        triangles = triangulate(points)
+        delaunay = Delaunay(points)
         expected_triangles = [
             Triangle(Point(0, 0), Point(0, 1), Point(1, 0)),
             Triangle(Point(0, 1), Point(1, 0), Point(1, 1))
         ]
-        self.assertEqual(triangles, expected_triangles)
+        self.assertEqual(delaunay.triangles, expected_triangles)
 
     def test_triangulation_collinearity_case(self):
         """
@@ -44,13 +44,13 @@ class TriangulateTest(TestCase):
             Point(0, 3),
             Point(1, 0)
         ]
-        triangles = triangulate(points)
+        delaunay = Delaunay(points)
         expected_triangles = [
             Triangle(Point(0, 0), Point(0, 1), Point(1, 0)),
             Triangle(Point(0, 1), Point(0, 2), Point(1, 0)),
             Triangle(Point(0, 2), Point(0, 3), Point(1, 0))
         ]
-        self.assertEqual(triangles, expected_triangles)
+        self.assertEqual(delaunay.triangles, expected_triangles)
 
 
 if __name__ == '__main__':
