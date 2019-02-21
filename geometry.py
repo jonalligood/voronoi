@@ -219,6 +219,9 @@ class Triangle(object):
             # CCW
             return False
 
+    def is_collinear(self):
+        return self.clockwise is None
+
     @classmethod
     def get_circumcircle(cls, line_1, line_2):
         """
