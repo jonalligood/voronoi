@@ -31,21 +31,27 @@ class Delaunay(object):
         self.convex_hull = ConvexHull(starter_hull)
         first_triangle = Triangle(*starter_hull)
         if first_triangle.is_collinear():
-            # The points are on the same line. Continue adding points to
-            # the convex hull until we get a non-collinear point
-            while True:
-                new_point = self.points.pop(0)
-                new_triangle = Triangle(new_point, *self.convex_hull.hull_points[-2:])
-                # We add the point to the convex hull regardless
-
-                if not new_triangle.is_collinear():
-                    self.triangles = self.build_triangles(new_point, self.convex_hull.hull_points)
-                    break
-                self.convex_hull.add_point(new_point)
-            else:
-                self.convex_hull.add_point(new_point)
+            self.get_collinear_triangles()
         else:
             self.triangles.append(Triangle(*starter_hull))
+
+    def get_collinear_triangles(self):
+        """
+        In the case of the initial points being on the same line, continue
+        adding points to the convex hull until we get the first non-collinear
+        point.
+        """
+        while True:
+            new_point = self.points.pop(0)
+            new_triangle = Triangle(new_point, *self.convex_hull.hull_points[-2:])
+            # We add the point to the convex hull regardless
+
+            if not new_triangle.is_collinear():
+                self.triangles = self.build_triangles(new_point, self.convex_hull.hull_points)
+                break
+            self.convex_hull.add_point(new_point)
+        else:
+            self.convex_hull.add_point(new_point)
 
     def triangulate(self):
         """
