@@ -27,6 +27,9 @@ class Point(object):
             return x_eq and y_eq
         return False
 
+    def __hash__(self):
+        return hash((self.x, self.y))
+
     def distance(self, point):
         """
         Determine the euclidean distance between this point and another
