@@ -48,7 +48,7 @@ class Delaunay(object):
         point.
         """
         while True:
-            if len(self.points) <= 0:
+            if not self.points:
                 # All the points are collinear
                 raise ValueError("All points provided are collinear and a ",
                                  "triangulation could not be formed.")
@@ -76,17 +76,10 @@ class Delaunay(object):
             self.convex_hull.add_point(point)
 
             points_to_connect = []
-            # Find any displaced points
-            displaced = find_difference(old_convex_hull, self.convex_hull.hull_points)
-            # If points were displaced
-            if displaced:
-                # add to points_to_connect
-                points_to_connect.append(displaced)
 
-            # Add the two points next to new_point in convex hull new_point
-            new_point_index = self.convex_hull.hull_points.index(point)
-            points_to_connect.append(self.convex_hull.hull_points[new_point_index-1])
-            points_to_connect.append(self.convex_hull.hull_points[new_point_index+1])
+            points_to_connect += self.get_displaced_points(old_convex_hull)
+
+            points_to_connect += self.get_neighboring_points(point)
 
             # Sort points_to_connect on x, y
             points_to_connect = sort_points(points_to_connect)
@@ -96,6 +89,9 @@ class Delaunay(object):
             self.triangles += new_triangles
 
     def build_triangles(self, point, points_to_connect):
+        """
+        Creates a list of triangles using point as a corner in every triangle.
+        """
         triangle_list = []
         n = len(points_to_connect)
         for i in range(n-1):
@@ -103,3 +99,22 @@ class Delaunay(object):
                 Triangle(point, points_to_connect[i], points_to_connect[i+1])
             )
         return triangle_list
+
+    def get_displaced_points(self, old_convex_hull):
+        """
+        Find the points that are no longer part of the convex hull. These will
+        form triangles with the newly added point.
+        """
+        return find_difference(old_convex_hull, self.convex_hull.hull_points)
+
+    def get_neighboring_points(self, point):
+        """
+        Find the two hull points next to the newly added point in the convex hull
+        """
+        # Add the two points next to new_point in convex hull new_point
+        new_point_index = self.convex_hull.hull_points.index(point)
+        return [
+            self.convex_hull.hull_points[new_point_index-1],
+            self.convex_hull.hull_points[new_point_index+1]
+        ]
+
