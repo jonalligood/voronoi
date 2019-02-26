@@ -3,9 +3,10 @@ from math import sqrt
 
 def sort_points(points):
     """
-    Sorts a given list of Point objects
+    Sorts a given list of Point objects and removes duplicates
     """
-    return  sorted(points, key=lambda p: (p.x, p.y))
+    unique_points = list(set(points))
+    return sorted(unique_points, key=lambda p: (p.x, p.y))
 
 
 class Point(object):

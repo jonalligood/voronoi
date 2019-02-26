@@ -4,6 +4,7 @@ from unittest import TestCase
 from geometry import Point, Triangle
 from triangulation import Delaunay
 
+
 class TriangulateTest(TestCase):
     def test_simple_triangulation(self):
         points = [
@@ -17,7 +18,6 @@ class TriangulateTest(TestCase):
         ]
         self.assertEqual(delaunay.triangles, expected_triangles)
 
-
     def test_triangulation(self):
         points = [
             Point(0, 0),
@@ -29,6 +29,22 @@ class TriangulateTest(TestCase):
         expected_triangles = [
             Triangle(Point(0, 0), Point(0, 1), Point(1, 0)),
             Triangle(Point(0, 1), Point(1, 0), Point(1, 1))
+        ]
+        self.assertEqual(delaunay.triangles, expected_triangles)
+
+    def test_triangulation_handles_same_points(self):
+        """
+        Ensure any duplicate points are removed.
+        """
+        points = [
+            Point(0, 0),
+            Point(1, 1),
+            Point(1, 1),
+            Point(2, 0)
+        ]
+        delaunay = Delaunay(points)
+        expected_triangles = [
+            Triangle(Point(0, 0), Point(1, 1), Point(2, 0))
         ]
         self.assertEqual(delaunay.triangles, expected_triangles)
 
