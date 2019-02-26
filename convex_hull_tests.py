@@ -2,7 +2,7 @@ import unittest
 from unittest import TestCase
 
 from geometry import Point
-from jarvis_march import ConvexHull
+from convex_hull import ConvexHull
 
 
 class ConvexHullTest(TestCase):
