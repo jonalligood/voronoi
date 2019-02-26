@@ -51,6 +51,19 @@ class TriangulateTest(TestCase):
             Triangle(Point(0, 2), Point(0, 3), Point(1, 0))
         ]
         self.assertEqual(delaunay.triangles, expected_triangles)
+        self.assertTrue(delaunay.degenerate)
+
+    def test_triangulation_all_collinear(self):
+        """
+        A triangulation cannot be produced if all the lines are collinear.
+        """
+        points = [
+            Point(0, 0),
+            Point(1, 1),
+            Point(2, 2)
+        ]
+        with self.assertRaises(ValueError):
+            delaunay = Delaunay(points)
 
 
 if __name__ == '__main__':

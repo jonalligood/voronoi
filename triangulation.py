@@ -13,10 +13,14 @@ def find_difference(old_points, new_points):
 
 
 class Delaunay(object):
+    """
+    Creates the triangulation using a sweep line approach.
+    """
     def __init__(self, points):
         self.points = sort_points(points)
         self.triangles = []
         self.convex_hull = None
+        self.degenerate = False
 
         self.build_initial()
         self.triangulate()
@@ -24,13 +28,15 @@ class Delaunay(object):
     def build_initial(self):
         """
         Creates the starter Triangle object(s). Built to handle collinearity in
-        the starting points.
+        the starting points. In such a case, the produced triangles will be
+        degenerate.
         """
         # Form a triangle and convex hull from the first 3 points
         starter_hull = [self.points.pop(0) for i in range(3)]
         self.convex_hull = ConvexHull(starter_hull)
         first_triangle = Triangle(*starter_hull)
         if first_triangle.is_collinear():
+            self.degenerate = True
             self.get_collinear_triangles()
         else:
             self.triangles.append(Triangle(*starter_hull))
@@ -42,6 +48,11 @@ class Delaunay(object):
         point.
         """
         while True:
+            if len(self.points) <= 0:
+                # All the points are collinear
+                raise ValueError("All points provided are collinear and a ",
+                                 "triangulation could not be formed.")
+
             new_point = self.points.pop(0)
             new_triangle = Triangle(new_point, *self.convex_hull.hull_points[-2:])
             # We add the point to the convex hull regardless
