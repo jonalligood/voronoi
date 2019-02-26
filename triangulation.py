@@ -113,8 +113,14 @@ class Delaunay(object):
         """
         # Add the two points next to new_point in convex hull new_point
         new_point_index = self.convex_hull.hull_points.index(point)
-        return [
-            self.convex_hull.hull_points[new_point_index-1],
-            self.convex_hull.hull_points[new_point_index+1]
-        ]
+
+        left_point = self.convex_hull.hull_points[new_point_index-1]
+
+        if len(self.convex_hull.hull_points) == new_point_index + 1:
+            # The newly added point neighbors the first hull_point
+            right_point = self.convex_hull.hull_points[0]
+        else:
+            right_point = self.convex_hull.hull_points[new_point_index+1]
+
+        return [left_point, right_point]
 
