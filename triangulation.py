@@ -61,8 +61,7 @@ class Delaunay(object):
                 self.triangles = self.build_triangles(new_point, self.convex_hull.hull_points)
                 break
             self.convex_hull.add_point(new_point)
-        else:
-            self.convex_hull.add_point(new_point)
+        self.convex_hull.add_point(new_point)
 
     def triangulate(self):
         """

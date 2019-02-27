@@ -61,11 +61,19 @@ class TriangulateTest(TestCase):
             Point(1, 0)
         ]
         delaunay = Delaunay(points)
+        expected_hull =  [
+            Point(0, 0),
+            Point(0, 1),
+            Point(0, 2),
+            Point(0, 3),
+            Point(1, 0)
+        ]
         expected_triangles = [
             Triangle(Point(0, 0), Point(0, 1), Point(1, 0)),
             Triangle(Point(0, 1), Point(0, 2), Point(1, 0)),
             Triangle(Point(0, 2), Point(0, 3), Point(1, 0))
         ]
+        self.assertEqual(delaunay.convex_hull.hull_points, expected_hull)
         self.assertEqual(delaunay.triangles, expected_triangles)
         self.assertTrue(delaunay.degenerate)
 
